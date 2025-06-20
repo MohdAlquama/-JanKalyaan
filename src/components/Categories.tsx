@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
@@ -7,7 +8,6 @@ const Categories = () => {
     fetch('http://localhost:5000/api/scheme/getData')
       .then((res) => res.json())
       .then((data) => {
-        // if data is array, else wrap into array
         const formatted = Array.isArray(data) ? data : [data];
         setCategories(formatted);
       })
@@ -33,16 +33,16 @@ const Categories = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {categories.map((item) => (
-            <div
+            <Link
+              to={`/scheme/${item._id}`}
               key={item._id}
-              id={item._id}
-              className="bg-white shadow-lg rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:shadow-xl transition-shadow duration-300"
+              className="bg-white shadow-lg rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:shadow-xl transition-shadow duration-300 hover:cursor-pointer"
             >
               <div className="text-4xl mb-4">{item.Icon}</div>
               <h3 className="text-xl font-semibold text-gray-800">
                 {item.Scheme}
               </h3>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
