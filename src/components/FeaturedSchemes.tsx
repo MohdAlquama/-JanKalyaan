@@ -1,9 +1,9 @@
 import React from 'react';
-import { 
-  Users, 
-  Heart, 
-  GraduationCap, 
-  Briefcase, 
+import {
+  Users,
+  Heart,
+  GraduationCap,
+  Briefcase,
   ArrowRight,
   Calendar,
   MapPin,
@@ -70,6 +70,19 @@ const FeaturedSchemes = () => {
     }
   ];
 
+  // Save scheme to localStorage
+  const handleSaveScheme = (scheme) => {
+    const saved = JSON.parse(localStorage.getItem("savedSchemes")) || [];
+    const exists = saved.some(s => s.id === scheme.id);
+    if (!exists) {
+      saved.push(scheme);
+      localStorage.setItem("savedSchemes", JSON.stringify(saved));
+      alert("Scheme saved!");
+    } else {
+      alert("Scheme already saved!");
+    }
+  };
+
   return (
     <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -89,12 +102,10 @@ const FeaturedSchemes = () => {
               className="group bg-white rounded-3xl p-8 border border-gray-100 hover:border-transparent hover:shadow-2xl transition-all duration-300 cursor-pointer relative overflow-hidden"
               style={{ animationDelay: `${index * 150}ms` }}
             >
-              {/* Background Pattern */}
               <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
                 <div className={`w-full h-full bg-gradient-to-br ${scheme.color} rounded-full transform translate-x-8 -translate-y-8`}></div>
               </div>
 
-              {/* Tag */}
               <div className="absolute top-6 right-6">
                 <span className={`bg-gradient-to-r ${scheme.color} text-white px-3 py-1 rounded-full text-xs font-medium`}>
                   {scheme.tag}
@@ -102,29 +113,20 @@ const FeaturedSchemes = () => {
               </div>
 
               <div className="relative z-10">
-                {/* Header */}
                 <div className="flex items-start space-x-4 mb-6">
                   <div className={`w-16 h-16 ${scheme.bgColor} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
                     <scheme.icon className={`text-${scheme.color.split('-')[1]}-600`} size={28} />
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-gray-800">
-                        {scheme.title}
-                      </h3>
-                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-gray-800">{scheme.title}</h3>
                     <span className={`bg-gradient-to-r ${scheme.color} text-white px-3 py-1 rounded-full text-xs font-medium`}>
                       {scheme.category}
                     </span>
                   </div>
                 </div>
 
-                {/* Description */}
-                <p className="text-gray-600 mb-6 leading-relaxed">
-                  {scheme.description}
-                </p>
+                <p className="text-gray-600 mb-6 leading-relaxed">{scheme.description}</p>
 
-                {/* Key Information */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="flex items-center space-x-2">
                     <IndianRupee className="text-green-600" size={16} />
@@ -156,28 +158,23 @@ const FeaturedSchemes = () => {
                   </div>
                 </div>
 
-                {/* Action Buttons */}
+                {/* Buttons */}
                 <div className="flex space-x-3">
-                  <button className={`flex-1 bg-gradient-to-r ${scheme.color} text-white py-3 px-4 rounded-xl hover:shadow-lg transition-all font-medium flex items-center justify-center space-x-2`}>
-                    <span>Apply Now</span>
+                  <button
+                    onClick={() => handleSaveScheme(scheme)}
+                    className={`flex-1 bg-gradient-to-r ${scheme.color} text-white py-3 px-4 rounded-xl hover:shadow-lg transition-all font-medium flex items-center justify-center space-x-2`}
+                  >
+                    <span>Saved Schemes</span>
                     <ArrowRight size={16} />
                   </button>
-                  <button className="px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors font-medium text-gray-700">
-                    Learn More
-                  </button>
+
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* View All Schemes */}
-        <div className="text-center mt-12">
-          <button className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-2xl hover:from-blue-700 hover:to-blue-800 transition-all font-medium flex items-center space-x-2 mx-auto shadow-lg hover:shadow-xl">
-            <span>View All Schemes</span>
-            <ArrowRight size={20} />
-          </button>
-        </div>
+        
       </div>
     </section>
   );

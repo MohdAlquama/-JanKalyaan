@@ -1,7 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import {Filter, Calendar } from 'lucide-react';
+import axios from 'axios';
 import { Search, ArrowRight, Users, Award, TrendingUp, Sparkles } from 'lucide-react';
 
 const Hero = () => {
+  const [schemes, setSchemes] = useState([]);
+const [searchTerm, setSearchTerm] = useState('');
+const [errorMsg, setErrorMsg] = useState('');
+
+  useEffect(() => {
+    
+    axios.get('http://localhost:5000/api/scheme/getData1')
+      .then(res => setSchemes(res.data))
+      .catch(err => console.error("Error fetching data:", err));
+  }, []);
+
+  const handleSearch = () => {
+    if (!searchTerm.trim()) {
+      setErrorMsg('Please enter a scheme name.');
+      return;
+    }
+
+    const matchedScheme = schemes.find(scheme =>
+      scheme.Description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (matchedScheme) {
+      setErrorMsg('');
+      window.location.href = matchedScheme.Link;
+    } else {
+      setErrorMsg('Scheme not found.');
+    }
+  };
+
+  
   return (
     <section id="home" className="relative pt-16 pb-20 bg-gradient-government overflow-hidden">
       {/* Advanced Background Elements */}
@@ -47,12 +79,14 @@ const Hero = () => {
                   <Search className="text-blue-600 animate-pulse-custom" size={24} />
                   <input
                     type="text"
+                    onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search for schemes, benefits, or categories..."
                     className="w-full py-4 outline-none text-gray-700 placeholder-gray-400 text-lg focus-ring"
                   />
                 </div>
                 <button className="btn-primary px-8 py-4 rounded-2xl flex items-center space-x-3 shadow-lg hover-scale">
-                  <span className="font-semibold text-lg">Search</span>
+                 <span onClick={handleSearch} className="font-semibold text-lg">Search</span>
+
                   <ArrowRight size={20} />
                 </button>
               </div>
@@ -62,11 +96,11 @@ const Hero = () => {
             <div className="flex flex-wrap items-center gap-6 text-white/80">
               <div className="flex items-center space-x-3 glass-morphism px-4 py-2 rounded-full hover-scale">
                 <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse-custom"></div>
-                <span className="font-medium">500+ Active Schemes</span>
+                <span className="font-medium">50+ Active Schemes</span>
               </div>
               <div className="flex items-center space-x-3 glass-morphism px-4 py-2 rounded-full hover-scale">
                 <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse-custom animation-delay-200"></div>
-                <span className="font-medium">10M+ Beneficiaries</span>
+                <span className="font-medium">10+ Beneficiaries</span>
               </div>
               <div className="flex items-center space-x-3 glass-morphism px-4 py-2 rounded-full hover-scale">
                 <div className="w-3 h-3 bg-orange-400 rounded-full animate-pulse-custom animation-delay-400"></div>

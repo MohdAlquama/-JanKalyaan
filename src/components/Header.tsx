@@ -1,22 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Search, Bell, User } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { VscFeedback } from "react-icons/vsc";
+
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [user, setUser] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
+
+    const storedUser = localStorage.getItem('token');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+    setShowDropdown(false);
+    navigate('/login');
+  };
+
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white shadow-lg backdrop-blur-md' : 'bg-white/95'
-    }`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg backdrop-blur-md' : 'bg-white/95'
+      }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -41,17 +59,49 @@ const Header = () => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <button className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
-              <Search size={20} />
+            <Link to="/saved" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+              Saved Schemes
+            </Link>
+
+
+            {user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setShowDropdown(!showDropdown)}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                >
+                  <User size={16} />
+                  <span>{user.name.split(' ')[0]}</span>
+                </button>
+                {showDropdown && (
+                  <div className="absolute right-0 mt-2 w-64 bg-white text-black rounded-lg shadow-lg p-4 z-50">
+                    <p className="font-semibold">{user.name}</p>
+                    <p className="text-sm text-gray-600">{user.email}</p>
+                    <hr className="my-2" />
+                    <button
+                      onClick={handleLogout}
+                      className="w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link to='/login'>
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+                  <User size={16} />
+                  <span>Login</span>
+                </button>
+              </Link>
+            )}
+            <Link to='/feedback'>
+            <button className='bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2'>
+              <VscFeedback />
             </button>
-            <button className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
-              <Bell size={20} />
-            </button>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
-              <User size={16} />
-              <span>Login</span>
-            </button>
+            </Link>
           </div>
+          
 
           {/* Mobile Menu Button */}
           <button
@@ -71,10 +121,24 @@ const Header = () => {
               <a href="#categories" className="text-gray-700 hover:text-blue-600 py-2 font-medium">Categories</a>
               <a href="#about" className="text-gray-700 hover:text-blue-600 py-2 font-medium">About</a>
               <a href="#contact" className="text-gray-700 hover:text-blue-600 py-2 font-medium">Contact</a>
+
+
+
               <div className="pt-4 border-t flex space-x-2">
-                <button className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                  Login
-                </button>
+                {user ? (
+                  <button
+                    onClick={handleLogout}
+                    className="flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition-colors"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <Link to="/login" className="flex-1">
+                    <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                      Login
+                    </button>
+                  </Link>
+                )}
               </div>
             </nav>
           </div>

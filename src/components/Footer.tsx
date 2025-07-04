@@ -1,9 +1,5 @@
 import React from 'react';
 import { 
-  Facebook, 
-  Twitter, 
-  Youtube, 
-  Instagram,
   Mail,
   Phone,
   MapPin,
@@ -12,7 +8,7 @@ import {
 
 const Footer = () => {
   const quickLinks = [
-    'Popular Schemes',
+    'Popular Schemes``',
     'Application Status',
     'Eligibility Checker',
     'Document Required',
@@ -20,15 +16,7 @@ const Footer = () => {
     'Contact Support'
   ];
 
-  const categories = [
-    'Agriculture',
-    'Health & Medical',
-    'Education',
-    'Employment',
-    'Women & Child',
-    'Housing'
-  ];
-
+  
   const governmentLinks = [
     'Ministry of Agriculture',
     'Ministry of Health',
@@ -42,7 +30,7 @@ const Footer = () => {
     <footer className="bg-gray-900 text-white">
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid lg:grid-cols-4 gap-8">
+        <div className="grid lg:grid-cols-4 gap-17">
           
           {/* Brand Section */}
           <div className="lg:col-span-1 space-y-6">
@@ -61,18 +49,7 @@ const Footer = () => {
               Empowering citizens with easy access to welfare benefits.
             </p>
 
-            {/* Social Links */}
-            <div className="flex space-x-4">
-              {[Facebook, Twitter, Youtube, Instagram].map((Icon, index) => (
-                <a
-                  key={index}
-                  href="#"
-                  className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors"
-                >
-                  <Icon size={18} />
-                </a>
-              ))}
-            </div>
+           
           </div>
 
           {/* Quick Links */}
@@ -90,21 +67,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Categories */}
-          <div>
-            <h4 className="text-lg font-semibold mb-6">Categories</h4>
-            <ul className="space-y-3">
-              {categories.map((category, index) => (
-                <li key={index}>
-                  <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center group">
-                    <ArrowRight className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    {category}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
+        
           {/* Government Links */}
           <div>
             <h4 className="text-lg font-semibold mb-6">Government Portals</h4>
@@ -121,26 +84,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Newsletter */}
-        <div className="mt-16 pt-8 border-t border-gray-800">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h4 className="text-xl font-semibold mb-2">Stay Updated</h4>
-              <p className="text-gray-300">Get notifications about new schemes and important updates</p>
-            </div>
-            <div className="flex space-x-3">
-              <input
-                type="email"
-                placeholder="Enter your email address"
-                className="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400"
-              />
-              <button className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all font-medium">
-                Subscribe
-              </button>
-            </div>
-          </div>
-        </div>
-
+        
         {/* Contact Info */}
         <div className="mt-12 pt-8 border-t border-gray-800">
           <div className="grid md:grid-cols-3 gap-6">
@@ -160,7 +104,7 @@ const Footer = () => {
               </div>
               <div>
                 <p className="text-sm text-gray-400">Email Support</p>
-                <p className="font-semibold">support@jankalyaan.gov.in</p>
+                <p className="font-semibold">nayan111155@gmail.com</p>
               </div>
             </div>
             

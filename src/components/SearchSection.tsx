@@ -1,17 +1,45 @@
-import React, { useState } from 'react';
-import { Search, Filter, MapPin, Calendar } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Search, Filter, Calendar } from 'lucide-react';
+import axios from 'axios';
 
 const SearchSection = () => {
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [schemes, setSchemes] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [activeFilter, setActiveFilter] = useState('all'); // ✅ Added back
 
   const filters = [
-    { id: 'all', label: 'All Schemes', count: '500+' },
-    { id: 'agriculture', label: 'Agriculture', count: '120+' },
-    { id: 'health', label: 'Health', count: '85+' },
-    { id: 'education', label: 'Education', count: '90+' },
-    { id: 'employment', label: 'Employment', count: '75+' },
-    { id: 'women', label: 'Women', count: '60+' }
+    { id: 'all', label: 'All Schemes', count: '50+' },
+    { id: 'agriculture', label: 'Agriculture', count: '12+' },
+    { id: 'health', label: 'Health', count: '8+' },
+    { id: 'education', label: 'Education', count: '9+' },
+    { id: 'employment', label: 'Employment', count: '10+' },
+    { id: 'women', label: 'Women', count: '11+' }
   ];
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/api/scheme/getData1')
+      .then(res => setSchemes(res.data))
+      .catch(err => console.error("Error fetching data:", err));
+  }, []);
+
+  const handleSearch = () => {
+    if (!searchTerm.trim()) {
+      setErrorMsg('Please enter a scheme name.');
+      return;
+    }
+
+    const matchedScheme = schemes.find(scheme =>
+      scheme.Description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (matchedScheme) {
+      setErrorMsg('');
+      window.location.href = matchedScheme.Link;
+    } else {
+      setErrorMsg('Scheme not found.');
+    }
+  };
 
   return (
     <section id="schemes" className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
@@ -25,40 +53,36 @@ const SearchSection = () => {
           </p>
         </div>
 
-        {/* Advanced Search Bar */}
+        {/* Search Bar Block */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-gray-100">
           <div className="grid lg:grid-cols-4 gap-4">
-            {/* Search Input */}
+            {/* Input */}
             <div className="lg:col-span-2 relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <input
                 type="text"
                 placeholder="Search schemes by name, keyword, or benefit..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
               />
             </div>
 
-            {/* Location */}
-            <div className="relative">
-              <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <select className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none appearance-none bg-white">
-                <option>All States</option>
-                <option>Delhi</option>
-                <option>Maharashtra</option>
-                <option>Karnataka</option>
-                <option>Tamil Nadu</option>
-              </select>
-            </div>
+            {/* Empty space for symmetry */}
+            <div className="hidden lg:block" />
 
             {/* Search Button */}
-            <button className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-6 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all font-medium flex items-center justify-center space-x-2">
+            <button
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-6 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all font-medium flex items-center justify-center space-x-2"
+              onClick={handleSearch}
+            >
               <Search size={16} />
               <span>Search</span>
             </button>
           </div>
         </div>
 
-        {/* Category Filters */}
+        {/* Filter Chips */}
         <div className="flex flex-wrap justify-center gap-3 mb-8">
           {filters.map((filter) => (
             <button
@@ -82,8 +106,12 @@ const SearchSection = () => {
           ))}
         </div>
 
+        {/* Error Message */}
+        {errorMsg && <p className="text-red-600 mt-4 font-medium text-center">{errorMsg}</p>}
+
         {/* Quick Actions */}
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-6 mt-10">
+          {/* Advanced Filters */}
           <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all group">
             <div className="flex items-start space-x-4">
               <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-600 transition-colors">
@@ -96,6 +124,7 @@ const SearchSection = () => {
             </div>
           </div>
 
+          {/* Application Tracker */}
           <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all group">
             <div className="flex items-start space-x-4">
               <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-600 transition-colors">
@@ -108,6 +137,7 @@ const SearchSection = () => {
             </div>
           </div>
 
+          {/* Personalized Recommendations */}
           <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all group">
             <div className="flex items-start space-x-4">
               <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center group-hover:bg-orange-600 transition-colors">

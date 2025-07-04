@@ -6,8 +6,9 @@ import Categories from './components/Categories';
 import SearchSection from './components/SearchSection';
 import Stats from './components/Stats';
 import Footer from './components/Footer';
+import About from './components/About';
+import Contact from './components/Contact';
 
-import Testing from './components/testing';
 
 function App() {
   return (
@@ -18,8 +19,9 @@ function App() {
       <SearchSection />
       <Categories />
       <FeaturedSchemes />
+      <About />
+      <Contact />
       <Footer />
-      <Testing />
     </div>
   );
 }
