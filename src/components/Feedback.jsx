@@ -1,33 +1,16 @@
 import React, { useState } from 'react';
 import { Star, Send, CheckCircle, AlertCircle, ArrowRight, ArrowLeft } from 'lucide-react';
-import { section } from 'framer-motion/client';
 
-interface FeedbackData {
-  rating: number;
-  experience: string;
-  suggestions: string;
-  name: string;
-  email: string;
-  phone: string;
-  schemeUsed: string;
-  helpfulness: number;
-  easeOfUse: number;
-}
-
-interface FormErrors {
-  [key: string]: string;
-}
-
-const FeedbackForm: React.FC = () => {
+const FeedbackForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [hoveredRating, setHoveredRating] = useState<number | null>(null);
-  const [hoveredHelpfulness, setHoveredHelpfulness] = useState<number | null>(null);
-  const [hoveredEaseOfUse, setHoveredEaseOfUse] = useState<number | null>(null);
+  const [errors, setErrors] = useState({});
+  const [hoveredRating, setHoveredRating] = useState(null);
+  const [hoveredHelpfulness, setHoveredHelpfulness] = useState(null);
+  const [hoveredEaseOfUse, setHoveredEaseOfUse] = useState(null);
 
-  const [formData, setFormData] = useState<FeedbackData>({
+  const [formData, setFormData] = useState({
     rating: 0,
     experience: '',
     suggestions: '',
@@ -41,8 +24,8 @@ const FeedbackForm: React.FC = () => {
 
   const totalSteps = 3;
 
-  const validateStep = (step: number): boolean => {
-    const newErrors: FormErrors = {};
+  const validateStep = (step) => {
+    const newErrors = {};
 
     if (step === 1) {
       if (formData.rating === 0) newErrors.rating = 'Please provide a rating';
@@ -69,43 +52,40 @@ const FeedbackForm: React.FC = () => {
 
   const handleNext = () => {
     if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, totalSteps));
+      setCurrentStep((prev) => Math.min(prev + 1, totalSteps));
     }
   };
 
   const handlePrev = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 1));
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateStep(currentStep)) return;
 
     setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     setIsSubmitting(false);
     setIsSubmitted(true);
   };
 
-  const handleInputChange = (field: keyof FeedbackData, value: string | number) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const handleInputChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
+      setErrors((prev) => ({ ...prev, [field]: '' }));
     }
   };
 
-  const renderStars = (value: number, onChange: (rating: number) => void, hoveredValue: number | null, onHover: (rating: number | null) => void) => {
+  const renderStars = (value, onChange, hoveredValue, onHover) => {
     return (
       <div className="flex space-x-1">
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
             className={`w-8 h-8 cursor-pointer transition-all duration-200 ${
-              star <= (hoveredValue || value) 
-                ? 'fill-yellow-400 text-yellow-400 scale-110' 
+              star <= (hoveredValue || value)
+                ? 'fill-yellow-400 text-yellow-400 scale-110'
                 : 'text-gray-300 hover:text-yellow-300'
             }`}
             onClick={() => onChange(star)}

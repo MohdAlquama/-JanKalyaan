@@ -19,7 +19,7 @@ function App() {
     setIsVisible(true);
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -27,7 +27,7 @@ function App() {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -42,10 +42,10 @@ function App() {
 
     try {
       const result = await emailjs.send(
-        'service_5awc6mc',       // 🔁 Replace with your actual service ID
-        'template_ybfi11r', // 🔁 Your template ID
+        'service_5awc6mc',      // 🔁 Replace with your actual service ID
+        'template_ybfi11r',     // 🔁 Your template ID
         templateParams,
-        'a_jjbNqymqBPqeEql'        // 🔁 Your EmailJS Public Key
+        'a_jjbNqymqBPqeEql'     // 🔁 Your EmailJS Public Key
       );
 
       console.log(result.text);
