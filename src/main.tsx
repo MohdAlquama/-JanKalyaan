@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SavedSchemes from './components/SavedSchemes.jsx';
 import App from './App';
 import Login from '@/components/Scheme/Login.jsx';
-import SignUp from '@/components/Scheme/signup.jsx';
+import SignUp from '@/components/Scheme/signUp.jsx';
 import SchemeDetail from '@/components/Scheme/SchemeDetail.jsx';
 import Feedback from './components/Feedback.jsx';
 
